@@ -7,7 +7,7 @@ help:
 
 # Image
 
-envirenments:
+environments:
 	@cp .env.template .env
 
 up:
@@ -20,8 +20,3 @@ down:
 
 test:
 	@docker compose run --rm php php test.php
-
-# Connections
-
-shell:
-	@docker compose exec php /bin/sh
