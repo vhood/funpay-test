@@ -21,18 +21,18 @@ class Database implements DatabaseInterface
         }
 
         foreach ($args as $arg) {
+            // условные блоки
+            if ($arg === $this->skip()) {
+                $query = preg_replace('/{.*}/', '', $query, 1);
+                continue;
+            }
+
             $query = preg_replace(
                 '/\?([dfa# ])/',
                 ':$1:',
                 $query,
                 1
             );
-
-            // условные блоки
-            if ($arg === $this->skip()) {
-                $query = preg_replace('/{.*}/', '', $query, 1);
-                continue;
-            }
 
             // Параметры ?, ?d, ?f могут принимать значения null (в этом случае в шаблон вставляется NULL)
             if ($arg === null && preg_match('/:[df ]:/', $query)) {
@@ -92,7 +92,7 @@ class Database implements DatabaseInterface
 
     public function skip()
     {
-        return '#skip';
+        return md5('#skip');
     }
 
     // Если спецификатор не указан, то используется тип переданного значения,
